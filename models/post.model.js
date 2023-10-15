@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const postSchema = mongoose.Schema(
   {
     userEmail: { type: String, required: true },
-    Title: { type: String },
+    Title: { type: String, unique: true },
     post: { type: String, required: true },
     createdAt: { type: String },
     comments: { type: Array, default: [] },
@@ -12,6 +12,6 @@ const postSchema = mongoose.Schema(
   },
   { timeStamps: true }
 );
-const Post = mongoose.model("Post", postSchema);
+const post = mongoose.model("Post", postSchema);
 
-module.exports = { Post };
+module.exports = { post };
