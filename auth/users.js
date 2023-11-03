@@ -1,6 +1,6 @@
-import user from "../models/user.model";
+import user from "../models/user.model.js";
 
-const getUser = async (req, res) => {
+export const getUser = async (req, res) => {
   try {
     const { id } = req.params;
     const userFound = await user.findById(id);
@@ -10,7 +10,7 @@ const getUser = async (req, res) => {
   }
 };
 
-// const getUserFriends = async (req, res) => {
+//export const getUserFriends = async (req, res) => {
 //   try {
 //     const { id } = req.params;
 //     const user = await User.findById(id);
@@ -29,7 +29,7 @@ const getUser = async (req, res) => {
 //   }
 // };
 
-// const addRemoveFriend = async (req, res) => {
+//export const addRemoveFriend = async (req, res) => {
 //   try {
 //     const { id, friendId } = req.params;
 //     const user = await User.findById(id);
@@ -59,6 +59,3 @@ const getUser = async (req, res) => {
 //     res.status(404).json({ message: err.message });
 //   }
 // };
-module.exports = { getUser };
-// module.exports = { getUserFriends };
-// module.exports = { addRemoveFriend };
