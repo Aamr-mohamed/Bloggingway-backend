@@ -9,11 +9,12 @@ import helmet from "helmet";
 import User from "./models/user.model.js";
 import Post from "./models/post.model.js";
 import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
 import { getUser } from "./auth/users.js";
 import { fileURLToPath } from "url";
 import { register } from "./controller/auth.js";
 import { verifyToken } from "./middleware/jwb.js";
-import { createPost } from "./auth/posts.js";
+import { createPost } from "./controller/posts.js";
 
 var app = express();
 app.use(cors());
@@ -37,12 +38,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// app.post("/upload-image", upload.single("image"), async (req, res) => {
-//   console.log(req.body);
-// });
-
 app.post("/adduser", upload.single("picturePath"), register);
-app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.post("/posts", createPost);
+app.use("/users", userRoutes);
 
 //
 app.use("/auth", authRoutes);

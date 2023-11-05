@@ -15,7 +15,7 @@ const postSchema = mongoose.Schema(
       required: true,
     },
     Title: { type: String, unique: true },
-    post: { type: String, required: true },
+    postContent: { type: String, required: true },
     comments: { type: Array, default: [] },
     likes: { type: Map, of: Boolean },
     picturePath: String,
