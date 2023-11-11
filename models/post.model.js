@@ -6,11 +6,7 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    firstname: {
-      type: String,
-      required: true,
-    },
-    lastname: {
+    username: {
       type: String,
       required: true,
     },
@@ -21,7 +17,7 @@ const postSchema = mongoose.Schema(
     picturePath: String,
     userPicturePath: String,
   },
-  { timeStamps: true }
+  { timestamps: true }
 );
 
 const Post = mongoose.model("Post", postSchema);

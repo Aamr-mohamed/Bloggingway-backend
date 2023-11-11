@@ -10,10 +10,11 @@ import User from "./models/user.model.js";
 import Post from "./models/post.model.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
+import postsRoutes from "./routes/post.js";
 import { getUser } from "./auth/users.js";
 import { fileURLToPath } from "url";
 import { register } from "./controller/auth.js";
-import { verifyToken } from "./middleware/jwb.js";
+import { verifyToken } from "./middleware/jwt.js";
 import { createPost } from "./controller/posts.js";
 
 var app = express();
@@ -39,11 +40,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post("/adduser", upload.single("picturePath"), register);
-app.post("/posts", createPost);
-app.use("/users", userRoutes);
+app.post("/posts", verifyToken, upload.single("picturePath"), createPost);
 
 //
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/posts", postsRoutes);
 
 //mongodb connection
 const PORT = process.env.PORT || 5001;
@@ -58,16 +60,6 @@ mongoose
   .catch((err) => {
     console.log(`${err} : dint connect`);
   });
-
-app.post("/posts", async (req, res) => {
-  try {
-    const postData = await Post.create(req.body);
-    res.json(postData);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ error: "All fields are required" });
-  }
-});
 
 app.get("/getImage");
 
