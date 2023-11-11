@@ -40,7 +40,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post("/adduser", upload.single("picturePath"), register);
-app.post("/posts", verifyToken, upload.single("picturePath"), createPost);
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 //
 app.use("/auth", authRoutes);

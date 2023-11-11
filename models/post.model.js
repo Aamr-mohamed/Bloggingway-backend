@@ -14,8 +14,9 @@ const postSchema = mongoose.Schema(
     postContent: { type: String, required: true },
     comments: { type: Array, default: [] },
     likes: { type: Map, of: Boolean },
-    picturePath: String,
-    userPicturePath: String,
+    picture: { type: String, default: "" },
+    picturePath: { type: String, default: "" },
+    userPicturePath: { type: String, default: "" },
   },
   { timestamps: true }
 );
