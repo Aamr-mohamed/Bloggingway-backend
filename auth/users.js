@@ -19,6 +19,7 @@ export const getUserFriends = async (req, res) => {
     const friends = await Promise.all(
       user.friends.map((id) => User.findById(id))
     );
+
     const formattedFriends = friends.map(
       ({ _id, username, firstName, lastName, gender, date, picturePath }) => {
         return {
@@ -32,6 +33,7 @@ export const getUserFriends = async (req, res) => {
         };
       }
     );
+
     res.status(200).json(formattedFriends);
   } catch (err) {
     res.status(404).json({ message: err.message });
