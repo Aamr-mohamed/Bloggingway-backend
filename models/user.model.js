@@ -40,6 +40,10 @@ const UserSchema = new mongoose.Schema(
     viewedProfile: {
       type: Number,
     },
+    about: {
+      type: String,
+      default: "Go to edit page to add",
+    },
   },
 
   { timestamps: true }
