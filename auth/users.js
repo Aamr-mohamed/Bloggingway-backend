@@ -81,23 +81,18 @@ export const addRemoveFriend = async (req, res) => {
 
 export const updateUser = async (req, res, next) => {
   try {
-    console.log("tried");
     let updatedData = req.body;
-    console.log(updatedData);
+
     if (updatedData.password) {
       const salt = await bcrypt.genSalt();
       let newPassword = await bcrypt.hash(updatedData.password, salt);
       updatedData.password = newPassword;
     }
-    console.log(updatedData);
+
     const options = { new: true };
     const id = req.params;
     const result = await User.findByIdAndUpdate(id, updatedData, options);
 
-    // const userId = mongoose.Types.ObjectId(id);
-    // console.log(userId);
-
-    console.log("updated");
     res.json({ message: "User updated successfully", result });
   } catch (error) {
     res.status(500).json({ error: error.message });
