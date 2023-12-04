@@ -82,6 +82,8 @@ export const addRemoveFriend = async (req, res) => {
 export const updateUser = async (req, res, next) => {
   try {
     let updatedData = req.body;
+    const id = req.params.id;
+    const user = await User.findById(id);
 
     if (updatedData.password) {
       const salt = await bcrypt.genSalt();
@@ -89,12 +91,21 @@ export const updateUser = async (req, res, next) => {
       updatedData.password = newPassword;
     }
 
+    if (updatedData.key && updatedData.key === "1234") {
+      console.log(user.role);
+      updatedData.role = !user.role;
+      console.log(user.role);
+    } else if (updatedData.key) {
+      res.status(500).json({ error: "incorrect secret key" });
+      return;
+    }
+
     const options = { new: true };
-    const id = req.params;
+
     const result = await User.findByIdAndUpdate(id, updatedData, options);
 
     res.json({ message: "User updated successfully", result });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(401).json({ error: error.message });
   }
 };
