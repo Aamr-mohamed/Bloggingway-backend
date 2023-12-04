@@ -56,6 +56,14 @@ export const login = async (req, res, next) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
+    if (user.role === "admin") {
+      console.log("wassup hacker");
+    }
+
+    if (user.role === "user") {
+      console.log("wassup peasent");
+    }
+
     console.log(token);
 
     delete user.password;
@@ -70,6 +78,8 @@ export const login = async (req, res, next) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// add the admin role and the nomal user role
 
 export const google = async (req, res, next) => {
   try {

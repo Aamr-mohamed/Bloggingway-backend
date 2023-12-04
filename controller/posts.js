@@ -32,6 +32,22 @@ export const createPost = async (req, res) => {
   }
 };
 
+export const removePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    const deletedPost = await Post.findByIdAndDelete(postId);
+
+    if (!deletedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getFeedPosts = async (req, res) => {
   try {
     const post = await Post.find();
@@ -48,6 +64,28 @@ export const getUserPosts = async (req, res) => {
     res.status(200).json(post);
   } catch (err) {
     res.status(404).json({ message: err.message });
+  }
+};
+
+export const editPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { Title, postContent, comments } = req.body;
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { Title, postContent, comments },
+      { new: true }
+    );
+    if (!updatedPost) {
+      return res.status(400).json({ message: "Post not found" });
+    }
+    res
+      .status(200)
+      .json({ message: "Post updated successfully", post: updatedPost });
+  } catch (error) {
+    console.error("Error in editPost:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 

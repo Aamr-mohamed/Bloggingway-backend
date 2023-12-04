@@ -44,6 +44,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "Go to edit page to add",
     },
+    role: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   { timestamps: true }
