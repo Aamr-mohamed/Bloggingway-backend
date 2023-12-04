@@ -53,27 +53,24 @@ export const login = async (req, res, next) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return next(errorHandler(401, "Invalid password!"));
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-
-    if (user.role === "admin") {
-      console.log("wassup hacker");
-    }
-
-    if (user.role === "user") {
-      console.log("wassup peasent");
-    }
+    console.log(user);
+    const formattedUser = {
+      ...user,
+      _id: user._id.toString(),
+      createdAt: user.createdAt.toISOString(),
+      updatedAt: user.updatedAt.toISOString(),
+    };
+    const token = jwt.sign(formattedUser, process.env.JWT_SECRET);
 
     console.log(token);
 
     delete user.password;
 
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
-      .status(200)
-      .json({ user, token });
+    res.cookie("access_token", token, {
+      httpOnly: true,
+    });
+    res.status(200).json({ user, token });
+    console.log("cookie");
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

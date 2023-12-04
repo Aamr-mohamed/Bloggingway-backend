@@ -16,9 +16,25 @@ import { fileURLToPath } from "url";
 import { register } from "./controller/auth.js";
 import { verifyToken } from "./middleware/jwt.js";
 import { createPost } from "./controller/posts.js";
+import { getJokes } from "./utils/jokes.js";
 
 var app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONT_URL,
+    credentials: true,
+  })
+);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", process.env.FRONT_URL);
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+  );
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
@@ -62,7 +78,7 @@ mongoose
   });
 
 app.get("/getImage");
-
+app.get("/getJoke", getJokes);
 app.get("/:id", getUser);
 
 app.use((err, req, res, next) => {
